@@ -1,0 +1,15 @@
+# 数据库信息配置
+ds:
+ dbName: glmall-pms
+ userName: root
+ password: root
+
+# 使用common包的配置，详见glmall-common工程
+spring:
+  profiles:
+    include: common-db
+
+# 绑定端口
+server:
+  port: 11000
+

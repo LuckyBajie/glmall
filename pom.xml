@@ -31,6 +31,9 @@
         <module>glmall-order</module>
         <module>glmall-product</module>
         <module>glmall-ware</module>
+        <module>glmall-common</module>
+        <module>renren-fast</module>
+        <module>renren-generator</module>
     </modules>
 
     <!--

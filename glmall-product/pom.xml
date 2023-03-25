@@ -16,4 +16,12 @@
     <name>glmall-product</name>
     <description>产品服务模块</description>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.glmall.common</groupId>
+            <artifactId>glmall-common</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
+
 </project>
