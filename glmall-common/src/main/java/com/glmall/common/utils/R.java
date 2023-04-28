@@ -8,6 +8,7 @@
 
 package com.glmall.common.utils;
 
+import com.glmall.common.constant.BusinessErrorCodeEnum;
 import org.apache.http.HttpStatus;
 
 import java.util.HashMap;
@@ -38,6 +39,13 @@ public class R extends HashMap<String, Object> {
 		R r = new R();
 		r.put("code", code);
 		r.put("msg", msg);
+		return r;
+	}
+
+	public static R error(BusinessErrorCodeEnum errorCodeEnum) {
+		R r = new R();
+		r.put("code", errorCodeEnum.getCode());
+		r.put("msg", errorCodeEnum.getMsg());
 		return r;
 	}
 

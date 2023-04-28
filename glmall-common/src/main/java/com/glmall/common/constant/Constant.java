@@ -46,6 +46,12 @@ public class Constant {
      */
     public static final String ASC = "asc";
 
+
+    /**
+     * MDC日志追踪的traceId
+     */
+    public static final String TRACE_ID = "trace_id";
+
     /**
      * 菜单类型
      *

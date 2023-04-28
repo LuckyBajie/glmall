@@ -1,20 +1,16 @@
 package com.glmall.product.controller;
 
-import java.util.Arrays;
-import java.util.Map;
-
-// import org.apache.shiro.authz.annotation.RequiresPermissions;
+import com.glmall.common.utils.R;
+import com.glmall.product.entity.CategoryEntity;
+import com.glmall.product.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.glmall.product.entity.CategoryEntity;
-import com.glmall.product.service.CategoryService;
-import com.glmall.common.utils.PageUtils;
-import com.glmall.common.utils.R;
+import java.util.Arrays;
+import java.util.List;
 
 
 
@@ -34,12 +30,12 @@ public class CategoryController {
     /**
      * 列表
      */
-    @RequestMapping("/list")
+    @RequestMapping("/listTree")
     // @RequiresPermissions("product:category:list")
-    public R list(@RequestParam Map<String, Object> params){
-        PageUtils page = categoryService.queryPage(params);
+    public R list(){
+        List<CategoryEntity> entities = categoryService.listWithTree();
 
-        return R.ok().put("page", page);
+        return R.ok().put("data", entities);
     }
 
 
@@ -77,12 +73,17 @@ public class CategoryController {
     }
 
     /**
-     * 删除
+     * Remove Category
+     *
+     * @RequestBody: The http request must be a 'post' method and the
+     *                          parameter must be a Json Object.
+     * @Param The parameter 'catIds' must be a Json Array.
+     * @Return An instance of R class.
      */
     @RequestMapping("/delete")
     // @RequiresPermissions("product:category:delete")
     public R delete(@RequestBody Long[] catIds){
-		categoryService.removeByIds(Arrays.asList(catIds));
+        categoryService.removeMenusByIds(Arrays.asList(catIds));
 
         return R.ok();
     }

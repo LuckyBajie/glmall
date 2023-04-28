@@ -1,14 +1,32 @@
-# 数据库信息配置
-ds:
-  dbName: glmall-sms
-  userName: root
-  password: root
-
-# 使用common包的配置，详见glmall-common工程
-spring:
-  profiles:
-    include: common-db
-
-# 绑定端口
-server:
-  port: 7000
+## 使用common包的配置，详见glmall-common工程
+#spring:
+#  application:
+#    name: glmall-coupon
+#  datasource:
+#    url: jdbc:mysql://192.168.1.158:3306/glmall-sms?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+#    username: root
+#    password: root
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#  # nacos相关配置
+#  # Note：如果不想使用 Nacos 作为您的服务注册与发现，可以将 spring.cloud.nacos.discovery.enabled 设置为 false。
+#  cloud:
+#    nacos:
+#      discovery:
+#        server-addr: 192.168.1.158:8848
+#        namespace: 13a8bea1-acad-4b5e-a275-ba7baa73dc78
+#management:
+#  endpoints:
+#    web:
+#      exposure:
+#        include: "*"
+#
+## mybatis-plus配置
+#mybatis-plus:
+#  mapper-locations: classpath:/mapper/**/*.xml
+#  global-config:
+#    db-config:
+#      id-type: auto
+#
+## 绑定端口
+#server:
+#  port: 7000

@@ -1,35 +1,52 @@
 package com.glmall.coupon.controller;
 
+import com.glmall.common.utils.PageUtils;
+import com.glmall.common.utils.R;
+import com.glmall.coupon.entity.CouponEntity;
+import com.glmall.coupon.service.CouponService;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
+import org.springframework.web.bind.annotation.*;
+
 import java.util.Arrays;
 import java.util.Map;
 
 // import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.glmall.coupon.entity.CouponEntity;
-import com.glmall.coupon.service.CouponService;
-import com.glmall.common.utils.PageUtils;
-import com.glmall.common.utils.R;
 
 
 
 /**
  * 优惠券信息
  *
+ * @RefreshScope: nacos上配置的属性，如果想要能够不启动服务器就自动刷新，只需要加上这个注解
+ *
  * @author lifeifei
  * @email lifeifei@gmail.com
  * @date 2023-03-25 17:51:00
  */
+@Slf4j
+@RefreshScope
 @RestController
 @RequestMapping("coupon/coupon")
 public class CouponController {
     @Autowired
     private CouponService couponService;
+
+    @Value("${mydb.dbname}")
+    private String dbName;
+
+    @RequestMapping("/test")
+    public R readNacosConfigTest(){
+        return R.ok().put("dbName", dbName);
+    }
+
+    @RequestMapping("/openFeignTest")
+    public R openFeignTest(){
+        log.info("测试方法被调用了...");
+        return R.ok().put("isCalled", true);
+    }
 
     /**
      * 列表
@@ -38,7 +55,7 @@ public class CouponController {
     // @RequiresPermissions("coupon:coupon:list")
     public R list(@RequestParam Map<String, Object> params){
         PageUtils page = couponService.queryPage(params);
-
+        log.info("aaa");
         return R.ok().put("page", page);
     }
 

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="false">
+    <!--每个logger都关联到logger上下文，默认上下文名称为“default”,用于区分不同应用程序的记录。一旦设置，不能修改 -->
+    <contextName>${APP_NAME}</contextName>
+    <!--定义日志文件的存储地址 勿在 LogBack 的配置中使用相对路径-->
+    <property name="LOG_HOME" value="./logs" />
+    <property name="APP_NAME" value="glmall-coupon-log"/>
+    <!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符-->
+    <property name="LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] [%magenta(%X{trace_id})]  %highlight(%-5level) %highlight(%logger{50}) - %msg%n"/>
+
+    <!-- 控制台输出 -->
+    <appender name="consoleLog" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <!-- info日志文件相关配置，暂时不需要 -->
+    <!--<appender name="fileInfoLog"  class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>INFO</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            &lt;!&ndash;日志文件输出的文件名&ndash;&gt;
+            <FileNamePattern>${LOG_HOME}/${APP_NAME}.info.log.%d{yyyy-MM-dd}.log</FileNamePattern>
+            &lt;!&ndash;日志文件保留天数&ndash;&gt;
+            <MaxHistory>30</MaxHistory>
+            &lt;!&ndash; totalSizeCap:该类文件最大空间，超过后会删除而不会管是否在保存时间内 &ndash;&gt;
+            <totalSizeCap>30MB</totalSizeCap>
+            &lt;!&ndash;  是否启动时清理过期日志，默认false  &ndash;&gt;
+            <cleanHistoryOnStart>true</cleanHistoryOnStart>
+        </rollingPolicy>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>-->
+
+    <!-- error日志相关设置，暂时不需要 -->
+    <!--<appender name="fileErrorLog"  class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            &lt;!&ndash;日志文件输出的文件名&ndash;&gt;
+            <FileNamePattern>${LOG_HOME}/${APP_NAME}.error.log.%d{yyyy-MM-dd}.log</FileNamePattern>
+            &lt;!&ndash;日志文件保留天数&ndash;&gt;
+            <MaxHistory>10</MaxHistory>
+            &lt;!&ndash; totalSizeCap:该类文件最大空间，超过后会删除而不会管是否在保存时间内 &ndash;&gt;
+            <totalSizeCap>8MB</totalSizeCap>
+            &lt;!&ndash;  是否启动时清理过期日志，默认false  &ndash;&gt;
+            <cleanHistoryOnStart>true</cleanHistoryOnStart>
+        </rollingPolicy>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>-->
+
+    <!-- warn日志相关配置，暂时不需要 -->
+    <!--<appender name="fileWarnLog"  class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>WARN</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            &lt;!&ndash;日志文件输出的文件名&ndash;&gt;
+            <FileNamePattern>${LOG_HOME}/${APP_NAME}.warn.log.%d{yyyy-MM-dd}.log</FileNamePattern>
+            &lt;!&ndash;日志文件保留天数&ndash;&gt;
+            <MaxHistory>10</MaxHistory>
+            &lt;!&ndash; totalSizeCap:该类文件最大空间，超过后会删除而不会管是否在保存时间内 &ndash;&gt;
+            <totalSizeCap>8MB</totalSizeCap>
+            &lt;!&ndash;  是否启动时清理过期日志，默认false  &ndash;&gt;
+            <cleanHistoryOnStart>true</cleanHistoryOnStart>
+        </rollingPolicy>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>-->
+
+    <!-- debug日志相关配置，暂时不需要 -->
+    <!--<appender name="fileDebugLog"  class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>DEBUG</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            &lt;!&ndash;日志文件输出的文件名&ndash;&gt;
+            <FileNamePattern>${LOG_HOME}/${APP_NAME}.debug.log.%d{yyyy-MM-dd}.log</FileNamePattern>
+            &lt;!&ndash;日志文件保留天数&ndash;&gt;
+            <MaxHistory>10</MaxHistory>
+            <totalSizeCap>1MB</totalSizeCap>
+        </rollingPolicy>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>-->
+
+    <!-- 日志输出级别 -->
+    <root level="INFO">
+        <appender-ref ref="consoleLog" />
+        <!--<appender-ref ref="fileErrorLog" />
+        <appender-ref ref="fileInfoLog"/>
+        <appender-ref ref="fileWarnLog" />
+        <appender-ref ref="fileDebugLog" />-->
+    </root>
+</configuration>

@@ -1,0 +1,34 @@
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: baidu_route
+          uri: https://www.baidu.com
+          predicates:
+            - Query=url, baidu
+        - id: qq_route
+          uri: https://www.qq.com
+          predicates:
+            - Query=url, qq
+        - id: glmall_thirdparty_route
+          uri: lb://glmall-thirdparty
+          predicates:
+            - Path=/api/thirdParty/**
+          # 路径重写
+          filters:
+            - RewritePath=/api/thirdParty/?(?<segment>.*), /thirdParty/$\{segment}
+        - id: glmall_product_route
+          uri: lb://glmall-product
+          predicates:
+            - Path=/api/product/**
+          # 路径重写
+          filters:
+            - RewritePath=/api/product/?(?<segment>.*), /product/$\{segment}
+        - id: glmall_admin_route
+          uri: lb://glmall-admin
+          predicates:
+            - Path=/api/**
+          # 路径重写，将/api/xxx请求的路径转换为/glmall-admin/xxx
+          filters:
+            - RewritePath=/api/?(?<segment>.*), /glmall-admin/$\{segment}
+

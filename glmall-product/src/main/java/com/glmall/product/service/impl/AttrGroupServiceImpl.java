@@ -8,6 +8,7 @@ import com.glmall.common.utils.Query;
 import com.glmall.product.dao.AttrGroupDao;
 import com.glmall.product.entity.AttrGroupEntity;
 import com.glmall.product.service.AttrGroupService;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
@@ -23,6 +24,24 @@ public class AttrGroupServiceImpl extends ServiceImpl<AttrGroupDao, AttrGroupEnt
                 new QueryWrapper<AttrGroupEntity>()
         );
 
+        return new PageUtils(page);
+    }
+
+    @Override
+    public PageUtils queryPage(Map<String, Object> params, Long catId) {
+        QueryWrapper<AttrGroupEntity> wrapper = new QueryWrapper<>();
+
+        if (catId != null && catId != 0) {
+            wrapper.eq("catelog_id", catId);
+        }
+
+        String key = (String) params.get("key");
+        // where catelog_id = ? and (attr_group_id = ? or attr_group_name like ?)
+        if (StringUtils.isNotBlank(key)) {
+            wrapper.and(w -> w.eq("attr_group_id", key).or().like("attr_group_name", key));
+        }
+
+        IPage<AttrGroupEntity> page = this.page(new Query<AttrGroupEntity>().getPage(params), wrapper);
         return new PageUtils(page);
     }
 

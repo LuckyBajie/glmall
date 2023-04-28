@@ -22,7 +22,6 @@
      -->
     <properties>
         <java.version>1.8</java.version>
-        <spring-cloud.version>Greenwich.SR6</spring-cloud.version>
     </properties>
 
     <modules>
@@ -32,6 +31,7 @@
         <module>glmall-product</module>
         <module>glmall-ware</module>
         <module>glmall-common</module>
+        <module>glmall-thirdparty</module>
         <module>renren-fast</module>
         <module>renren-generator</module>
     </modules>
@@ -39,46 +39,27 @@
     <!--
       Note：如果子项目中不需要这个依赖版本管理，请使用<exclusions>标签将其去除；
       如果子模块需要的依赖版本不同，请手动配置自己管理的版本
+      版本管理已经移动到common工程中
      -->
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-dependencies</artifactId>
-                <version>${spring-cloud.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
+
 
     <!--
         Note：在父级项目中添加统一的基础依赖，以便于简化子模块的依赖配置量。
         但是如果子模块不需要某些依赖的时候，请使用<exclusions>标签排除多余的
         依赖。
+        除了测试包以外，其他依赖包已经移动到common工程中
      -->
     <dependencies>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-openfeign</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
             <version>RELEASE</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
     </dependencies>
