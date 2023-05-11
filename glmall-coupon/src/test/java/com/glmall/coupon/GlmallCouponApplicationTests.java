@@ -1,6 +1,5 @@
 package com.glmall.coupon;
 
-import com.glmall.coupon.entity.CouponEntity;
 import com.glmall.coupon.service.CouponService;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,9 +14,9 @@ class GlmallCouponApplicationTests {
 
     @Test
     void contextLoads() {
-        CouponEntity coupon = new CouponEntity();
-        coupon.setCouponName("好运不断");
-        couponService.save(coupon);
+        // CouponEntity coupon = new CouponEntity();
+        // coupon.setCouponName("好运不断");
+        // couponService.save(coupon);
 
         couponService.list().forEach(item->{
             System.out.println(item);

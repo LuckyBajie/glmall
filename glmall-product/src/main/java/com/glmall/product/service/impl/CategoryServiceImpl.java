@@ -7,9 +7,12 @@ import com.glmall.common.utils.PageUtils;
 import com.glmall.common.utils.Query;
 import com.glmall.product.dao.CategoryDao;
 import com.glmall.product.entity.CategoryEntity;
+import com.glmall.product.service.CategoryBrandRelationService;
 import com.glmall.product.service.CategoryService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -18,6 +21,9 @@ import java.util.stream.Collectors;
 
 @Service("categoryService")
 public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity> implements CategoryService {
+
+    @Resource
+    private CategoryBrandRelationService categoryBrandRelationService;
 
     /*
     @Resource
@@ -35,7 +41,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
     }
 
     @Override
-    public List<CategoryEntity> listWithTree() {
+    public List<CategoryEntity> listWithTree(boolean level3NeedChildren) {
         // 1.查出所有分类
         List<CategoryEntity> entities = baseMapper.selectList(null);
         // 2.组装成父子的树形结构
@@ -43,7 +49,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
         List<CategoryEntity> level1Menu = entities.stream()
                 .filter(entitie -> entitie.getParentCid() == 0)
                 .map(menu -> {
-                    menu.setChildren(getChildren(menu, entities));
+                    menu.setChildren(getChildren(menu, entities, level3NeedChildren));
                     return menu;
                 }).sorted(Comparator.comparingInt(menu -> (menu.getSort() == null ? 0 : menu.getSort()))
                 ).collect(Collectors.toList());
@@ -61,20 +67,39 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
         baseMapper.deleteBatchIds(ids);
     }
 
+    @Transactional
+    @Override
+    public void updateDetail(CategoryEntity category) {
+        this.updateById(category);
+        // 同步更新其他关联表里的冗余数据
+        if (!category.getName().isEmpty()) {
+            categoryBrandRelationService.updateCategory(category.getCatId(), category.getName());
+
+            // todo 更新其他关联
+        }
+    }
+
     /**
      * 递归：为当前层级分类节点设置子分类
+     *
      * @param root 当前上一级分类节点
-     * @param all 所有分类数据
+     * @param all  所有分类数据
      * @return
      */
     private List<CategoryEntity> getChildren(CategoryEntity root,
-                                             List<CategoryEntity> all) {
+                                             List<CategoryEntity> all, boolean level3NeedChildren) {
         List<CategoryEntity> children = all.stream()
                 // 过滤出当前层级的子分类
                 .filter(categoryEntity -> categoryEntity.getParentCid() == root.getCatId())
                 // 为子分类递归设置【子分类的子分类】
                 .map(categoryEntity -> {
-                    categoryEntity.setChildren(getChildren(categoryEntity, all));
+                    if (level3NeedChildren) {
+                        categoryEntity.setChildren(getChildren(categoryEntity, all, true));
+                    } else {
+                        if (!categoryEntity.getCatLevel().equals(3)) {
+                            categoryEntity.setChildren(getChildren(categoryEntity, all, false));
+                        }
+                    }
                     return categoryEntity;
                 }).sorted(Comparator.comparingInt(menu -> (menu.getSort() == null ? 0 : menu.getSort()))
                 ).collect(Collectors.toList());

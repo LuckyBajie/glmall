@@ -1,20 +1,16 @@
 package com.glmall.member.controller;
 
+import com.glmall.common.utils.PageUtils;
+import com.glmall.common.utils.R;
+import com.glmall.member.entity.MemberLevelEntity;
+import com.glmall.member.service.MemberLevelService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
 import java.util.Arrays;
 import java.util.Map;
 
 // import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.glmall.member.entity.MemberLevelEntity;
-import com.glmall.member.service.MemberLevelService;
-import com.glmall.common.utils.PageUtils;
-import com.glmall.common.utils.R;
 
 
 

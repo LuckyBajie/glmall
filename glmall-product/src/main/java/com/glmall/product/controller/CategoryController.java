@@ -30,10 +30,21 @@ public class CategoryController {
     /**
      * 列表
      */
+    @RequestMapping("/list/tree")
+    // @RequiresPermissions("product:category:list")
+    public R listTree(){
+        List<CategoryEntity> entities = categoryService.listWithTree(true);
+
+        return R.ok().put("data", entities);
+    }
+
+    /**
+     * 列表
+     */
     @RequestMapping("/listTree")
     // @RequiresPermissions("product:category:list")
     public R list(){
-        List<CategoryEntity> entities = categoryService.listWithTree();
+        List<CategoryEntity> entities = categoryService.listWithTree(false);
 
         return R.ok().put("data", entities);
     }
@@ -67,7 +78,8 @@ public class CategoryController {
     @RequestMapping("/update")
     // @RequiresPermissions("product:category:update")
     public R update(@RequestBody CategoryEntity category){
-		categoryService.updateById(category);
+        categoryService.updateDetail(category);
+		// categoryService.updateById(category);
 
         return R.ok();
     }

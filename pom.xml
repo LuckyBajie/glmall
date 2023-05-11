@@ -32,6 +32,7 @@
         <module>glmall-ware</module>
         <module>glmall-common</module>
         <module>glmall-thirdparty</module>
+        <module>glmall-search</module>
         <module>renren-fast</module>
         <module>renren-generator</module>
     </modules>

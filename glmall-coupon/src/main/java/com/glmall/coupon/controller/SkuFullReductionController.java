@@ -1,20 +1,17 @@
 package com.glmall.coupon.controller;
 
+import com.glmall.common.to.SkuReductionTo;
+import com.glmall.common.utils.PageUtils;
+import com.glmall.common.utils.R;
+import com.glmall.coupon.entity.SkuFullReductionEntity;
+import com.glmall.coupon.service.SkuFullReductionService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
 import java.util.Arrays;
 import java.util.Map;
 
 // import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.glmall.coupon.entity.SkuFullReductionEntity;
-import com.glmall.coupon.service.SkuFullReductionService;
-import com.glmall.common.utils.PageUtils;
-import com.glmall.common.utils.R;
 
 
 
@@ -30,6 +27,14 @@ import com.glmall.common.utils.R;
 public class SkuFullReductionController {
     @Autowired
     private SkuFullReductionService skuFullReductionService;
+
+
+    @PostMapping("/saveInfo")
+    // @RequiresPermissions("coupon:skufullreduction:list")
+    public R saveInfo(@RequestBody SkuReductionTo reductionTo){
+        skuFullReductionService.saveSkuReduction(reductionTo);
+        return R.ok();
+    }
 
     /**
      * 列表

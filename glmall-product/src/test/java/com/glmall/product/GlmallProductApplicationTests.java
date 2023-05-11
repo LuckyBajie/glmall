@@ -1,7 +1,9 @@
 package com.glmall.product;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.glmall.product.entity.AttrGroupEntity;
 import com.glmall.product.entity.BrandEntity;
+import com.glmall.product.service.AttrGroupService;
 import com.glmall.product.service.BrandService;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -17,6 +19,20 @@ class GlmallProductApplicationTests {
 
     @Resource
     private BrandService brandService;
+
+    @Resource
+    private AttrGroupService attrGroupService;
+
+    @Test
+    void testNothing(){
+        System.out.println("infoById");
+    }
+
+    @Test
+    void testFindPath(){
+        AttrGroupEntity infoById = attrGroupService.getInfoById(225l);
+        System.out.println(infoById);
+    }
 
     @Test
     void contextLoads() {
