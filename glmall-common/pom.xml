@@ -101,6 +101,24 @@
             <artifactId>spring-boot-configuration-processor</artifactId>
         </dependency>
 
+        <!-- 依赖spring-boot-starter-data-redis，
+        当前版本lettuce有问题，需要更换底层工具为jedis -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>io.lettuce</groupId>
+                    <artifactId>lettuce-core</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+        </dependency>
+
     </dependencies>
 
     <dependencyManagement>
