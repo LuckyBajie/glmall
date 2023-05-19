@@ -3,6 +3,7 @@ package com.glmall.product.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.glmall.common.utils.PageUtils;
 import com.glmall.product.entity.CategoryEntity;
+import com.glmall.product.web.vo.Catalog2Vo;
 
 import java.util.List;
 import java.util.Map;
@@ -23,5 +24,10 @@ public interface CategoryService extends IService<CategoryEntity> {
     void removeMenusByIds(List<Long> ids);
 
     void updateDetail(CategoryEntity category);
+
+    List<CategoryEntity> getLevel1Categories();
+
+    Map<String, List<Catalog2Vo>> getCatalogJson();
+
 }
 

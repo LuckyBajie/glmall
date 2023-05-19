@@ -9,8 +9,10 @@ import com.glmall.product.dao.CategoryDao;
 import com.glmall.product.entity.CategoryEntity;
 import com.glmall.product.service.CategoryBrandRelationService;
 import com.glmall.product.service.CategoryService;
+import com.glmall.product.web.vo.Catalog2Vo;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import java.util.Comparator;
@@ -77,6 +79,69 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
 
             // todo 更新其他关联
         }
+    }
+
+    @Override
+    public List<CategoryEntity> getLevel1Categories() {
+        List<CategoryEntity> categoryEntities = this.list(new QueryWrapper<CategoryEntity>()
+                .eq("parent_cid", 0));
+        return categoryEntities;
+    }
+
+    @Override
+    public Map<String, List<Catalog2Vo>> getCatalogJson() {
+        /**
+         * 1. 将数据库的多次查询变为一次
+         */
+        List<CategoryEntity> allCategories = this.list(null);
+        // getCategoriesByParentId(allCategories,1l);
+        // 查出所有1级分类分类
+
+        List<CategoryEntity> level1Categories = this.getLevel1Categories();
+        // 封装数据
+        Map<String, List<Catalog2Vo>> map = level1Categories.stream().collect(Collectors.toMap(
+                k -> k.getCatId().toString(),
+                v -> {
+                    // 每一个的一级分类，查到这个一级分类的二级分类
+                    List<CategoryEntity> entities = getCategoriesByParentId(allCategories, v.getCatId());
+
+                    // 封装上面的结果
+                    List<Catalog2Vo> catalog2Vos = null;
+                    if (!CollectionUtils.isEmpty(entities)) {
+                        catalog2Vos = entities.stream().map(item -> {
+                            Catalog2Vo catalog2Vo = new Catalog2Vo(v.getCatId().toString(),
+                                    null,
+                                    item.getCatId().toString(),
+                                    item.getName());
+                            // 找当前二级分类的三级分类封装成vo
+                            List<CategoryEntity> category3Entities = getCategoriesByParentId(allCategories, item.getCatId());
+                            if (!CollectionUtils.isEmpty(category3Entities)) {
+                                List<Catalog2Vo.Catalog3Vo> catalog3Vos = category3Entities.stream().map(l3Item -> {
+                                    Catalog2Vo.Catalog3Vo catalog3Vo = new Catalog2Vo
+                                            .Catalog3Vo(item.getCatId().toString(),
+                                            l3Item.getCatId().toString(),
+                                            l3Item.getName());
+                                    return catalog3Vo;
+                                }).collect(Collectors.toList());
+                                catalog2Vo.setCatalog3List(catalog3Vos);
+                            }
+
+                            return catalog2Vo;
+
+                        }).collect(Collectors.toList());
+                    }
+                    return catalog2Vos;
+                }
+
+
+        ));
+        return map;
+    }
+
+    private List<CategoryEntity> getCategoriesByParentId(List<CategoryEntity> allCategories, Long parentCid) {
+        return allCategories.stream()
+                .filter(categoryEntity -> categoryEntity.getParentCid() == parentCid)
+                .collect(Collectors.toList());
     }
 
     /**

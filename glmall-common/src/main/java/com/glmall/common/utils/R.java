@@ -8,6 +8,8 @@
 
 package com.glmall.common.utils;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.TypeReference;
 import com.glmall.common.constant.BusinessErrorCodeEnum;
 import org.apache.http.HttpStatus;
 
@@ -21,7 +23,15 @@ import java.util.Map;
  */
 public class R extends HashMap<String, Object> {
 	private static final long serialVersionUID = 1L;
-	
+
+	public <T> T getData(TypeReference<T> typeReference){
+		Object data = get("data");
+		String s = JSON.toJSONString(data);
+		// 阿里的FastJSON能通过TypeReference类，为我们提供基于泛型的类型转换
+		T t = JSON.parseObject(s, typeReference);
+		return t;
+	}
+
 	public R() {
 		put("code", 0);
 		put("msg", "success");

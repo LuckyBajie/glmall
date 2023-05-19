@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.glmall.common.to.SkuHasStockTo;
 import com.glmall.common.utils.PageUtils;
 import com.glmall.common.utils.Query;
 import com.glmall.common.utils.R;
@@ -17,8 +18,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 
 @Service("wareSkuService")
@@ -67,12 +70,48 @@ public class WareSkuServiceImpl extends ServiceImpl<WareSkuDao, WareSkuEntity> i
                     String skuName = skuInfo.getString("skuName");
                     entity.setSkuName(skuName);
                 }
-            }catch (Exception e){}
+            } catch (Exception e) {
+            }
 
             this.save(entity);
-        }else {
+        } else {
             this.baseMapper.updateStock(skuId, wareId, skuNum);
         }
+    }
+
+    /**
+     * @param skuIds
+     * @return List<SkuHasStockTo> result，没有数据则表明查不到sku库存
+     */
+    @Override
+    public List<SkuHasStockTo> getSkusHasStock(List<Long> skuIds) {
+        // 查出所有sku的库存信息
+        List<WareSkuEntity> wareSkuEntities = this.list(new QueryWrapper<WareSkuEntity>()
+                .in("sku_id", skuIds));
+
+        List<SkuHasStockTo> result = new ArrayList<>();
+
+        if (!CollectionUtils.isEmpty(wareSkuEntities)) {
+            // 以skuId进行分组
+            Map<Long, List<WareSkuEntity>> map = wareSkuEntities.stream()
+                    .collect(Collectors.groupingBy(WareSkuEntity::getSkuId));
+            // 计算每个sku是否有库存
+            map.keySet().forEach(key -> {
+                List<WareSkuEntity> skuEntities = map.get(key);
+                SkuHasStockTo vo = new SkuHasStockTo();
+                vo.setHasStock(false);
+                if (!CollectionUtils.isEmpty(skuEntities)) {
+                    Long stockSum = skuEntities.stream()
+                            .mapToLong(skuEntity -> skuEntity.getStock() == null ? 0 : skuEntity.getStock()).sum();
+                    Long stockLockedSum = skuEntities.stream()
+                            .mapToLong(skuEntity -> skuEntity.getStockLocked() == null ? 0 : skuEntity.getStockLocked()).sum();
+                    vo.setHasStock(stockSum - stockLockedSum > 0);
+                }
+                vo.setSkuId(key);
+                result.add(vo);
+            });
+        }
+        return result;
     }
 
 }

@@ -21,6 +21,7 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
         return new GlmallExceptionControllerAdvice();
     }
 
+    @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(logInterceptor());
     }

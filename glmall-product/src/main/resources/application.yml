@@ -1,5 +1,7 @@
 # 这里如果不配置的话，test类无法正常进行单元测试
 # 建议：开发测试中的密码要与生产环境的隔离开来
-#jasypt:
-#  encryptor:
-#    password: glmall-salt20230405
+jasypt:
+  encryptor:
+    password: glmall-salt20230405
+
+

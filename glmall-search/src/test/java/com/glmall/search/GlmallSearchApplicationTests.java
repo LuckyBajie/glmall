@@ -36,6 +36,55 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ * 将商品数据保存到es中：
+ * 消费空间，节省时间
+ * 1）方便检索
+ * {
+ *     skuId:1,
+ *     spuId:11,
+ *     skuTitle:华为,
+ *     price:998,
+ *     attrs:[
+ *          {尺寸：6存},
+ *          {cpu：高通},
+ *          {分辨率：全高清}
+ *     ]
+ * }
+ * 问题，存在数据冗余：
+ * 100万*2K = 2000MB=2G
+ *
+ * 2）节省空间，浪费时间
+ * sku索引
+ *  {
+ *     skuId:1,
+ *     spuId:11,
+ *     skuTitle:华为,
+ *     price:998
+ *  }
+ *  attr索引
+ *  {
+ *      spuId:11,
+ *      attrs:[
+ *          {尺寸：6存},
+ *          {cpu：高通},
+ *          {分辨率：全高清}
+ *      ]
+ *  }
+ *  问题：搜索小米：
+ *      涵盖的分类：粮食、手机、电器
+ *      带小米的商品有，10000个sku；涉及到4000个spu
+ *      分步：
+ *      查询4000个spu对应的所有可能属性：
+ *      esClient：每次请求光传递spuId，
+ *      数据量4000*8byte=32000Byte=32kb
+ *      并发场景下：
+ *      10000并发*32kb=320mb
+ *      如果百万并发：
+ *      1000000并发*32kb=32000mb=32GB
+ *
+ *
+ */
 @RunWith(SpringRunner.class)
 @SpringBootTest
 class GlmallSearchApplicationTests {
