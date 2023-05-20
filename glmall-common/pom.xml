@@ -21,6 +21,7 @@
         <spring-cloud.version>Greenwich.SR6</spring-cloud.version>
         <spring.cloud.alibaba.version>2.1.2.RELEASE</spring.cloud.alibaba.version>
         <jasypt.version>3.0.5</jasypt.version>
+        <redisson.version>3.21.3</redisson.version>
     </properties>
 
     <dependencies>
@@ -117,6 +118,24 @@
         <dependency>
             <groupId>redis.clients</groupId>
             <artifactId>jedis</artifactId>
+        </dependency>
+
+        <!-- 分布式锁、分布式对象功能的框架 -->
+        <dependency>
+            <groupId>org.redisson</groupId>
+            <artifactId>redisson</artifactId>
+            <version>${redisson.version}</version>
+        </dependency>
+
+
+        <!--<dependency>
+            <groupId>org.redisson</groupId>
+            <artifactId>redisson-spring-boot-starter</artifactId>
+        </dependency>-->
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-cache</artifactId>
         </dependency>
 
     </dependencies>
