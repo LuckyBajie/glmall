@@ -4,13 +4,19 @@ import com.baomidou.mybatisplus.annotation.DbType;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
 import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+/**
+ *  * @ConditionalOnProperty: 根据配置文件是否有指定属性配置，来决定是否加载类对象到容器中
+ *
+ */
 @Configuration
 @EnableTransactionManagement // 启用事务管理
 @MapperScan("com.glmall.**.dao")
+@ConditionalOnProperty(prefix = "config", name = "mybatis-plus", matchIfMissing = true)
 public class MybatisPlusConfiguration {
 
     //旧版 3.4以下

@@ -1,5 +1,9 @@
 package com.glmall.common.configuration;
 
+/**
+ * 暂时不需要这个配置
+ */
+@Deprecated
 public class RestTemplateConfiguration {
 
     /*

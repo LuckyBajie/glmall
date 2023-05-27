@@ -24,6 +24,14 @@ import java.util.Map;
 public class R extends HashMap<String, Object> {
 	private static final long serialVersionUID = 1L;
 
+	public <T> T getDataByKey(String key,TypeReference<T> typeReference){
+		Object data = get(key);
+		String s = JSON.toJSONString(data);
+		// 阿里的FastJSON能通过TypeReference类，为我们提供基于泛型的类型转换
+		T t = JSON.parseObject(s, typeReference);
+		return t;
+	}
+
 	public <T> T getData(TypeReference<T> typeReference){
 		Object data = get("data");
 		String s = JSON.toJSONString(data);

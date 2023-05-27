@@ -1,1 +1,6 @@
-
+# 是否加载公共配置类对象到容器中，如果配置了指定的属性（值是什么没关系），
+# 则不加载
+config:
+  redis: false
+  redisson: false
+  mybatis-plus: false

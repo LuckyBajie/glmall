@@ -279,6 +279,12 @@ class GlmallSearchApplicationTests {
 
     @Test
     void contextLoads() {
+        String s = "500_";
+        String[] s1 = s.split("_");
+        System.out.println(s1.length);
+        System.out.println("".equals(s1[0]));
+        System.out.println(s1[1]);
+        System.out.println(Arrays.asList(s.split("_")));
         System.out.println(restHighLevelClient);
     }
 
