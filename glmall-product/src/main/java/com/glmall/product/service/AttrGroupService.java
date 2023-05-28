@@ -5,6 +5,7 @@ import com.glmall.common.utils.PageUtils;
 import com.glmall.product.entity.AttrGroupEntity;
 import com.glmall.product.vo.AttrGroupRelationVo;
 import com.glmall.product.vo.AttrGroupWithAttrsVo;
+import com.glmall.product.web.vo.SpuItemAttrGroupVo;
 
 import java.util.List;
 import java.util.Map;
@@ -29,5 +30,7 @@ public interface AttrGroupService extends IService<AttrGroupEntity> {
     void deleteRelation(AttrGroupRelationVo[] vos);
 
     List<AttrGroupWithAttrsVo> getAttrGroupWithAttrs(Long catelogId);
+
+    List<SpuItemAttrGroupVo> getAttrGroupWithAttrsBySpuId(Long spuId, Long catalogId);
 }
 

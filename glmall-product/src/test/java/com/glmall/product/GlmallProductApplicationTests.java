@@ -1,10 +1,15 @@
 package com.glmall.product;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.glmall.product.dao.AttrGroupDao;
 import com.glmall.product.entity.AttrGroupEntity;
 import com.glmall.product.entity.BrandEntity;
 import com.glmall.product.service.AttrGroupService;
 import com.glmall.product.service.BrandService;
+import com.glmall.product.service.SkuSaleAttrValueService;
+import com.glmall.product.web.vo.ItemSaleAttrsVo;
+import com.glmall.product.web.vo.SpuItemAttrGroupVo;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.redisson.api.RLock;
@@ -19,6 +24,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
+@Slf4j
 @RunWith(SpringRunner.class)
 @SpringBootTest
 class GlmallProductApplicationTests {
@@ -34,6 +40,24 @@ class GlmallProductApplicationTests {
 
     @Resource
     private RedissonClient redissonClient;
+
+    @Resource
+    AttrGroupDao attrGroupDao;
+
+    @Resource
+    SkuSaleAttrValueService skuSaleAttrValueService;
+
+    @Test
+    void testAttrGroupDao(){
+        List<SpuItemAttrGroupVo> vos = attrGroupDao.getAttrGroupWithAttrsBySpuId(60l, 225l);
+
+        log.info(vos.toString());
+
+        List<ItemSaleAttrsVo> vos1 = skuSaleAttrValueService.getSaleAttrsBySpuId(6l);
+        log.info(vos1.toString());
+
+
+    }
 
     @Test
     void testRedissonWRLock(){
