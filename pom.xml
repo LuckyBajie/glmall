@@ -33,6 +33,7 @@
         <module>glmall-common</module>
         <module>glmall-thirdparty</module>
         <module>glmall-search</module>
+        <module>glmall-auth</module>
         <module>renren-fast</module>
         <module>renren-generator</module>
     </modules>
