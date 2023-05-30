@@ -25,7 +25,8 @@ import java.util.Map;
 //@RestControllerAdvice(basePackages = {"com.glmall.**.controller"}) 通配符的写法有问题，没有正确对方法进行增强
 @RestControllerAdvice(basePackages = {"com.glmall.coupon.controller",
         "com.glmall.member.controller", "com.glmall.order.controller",
-        "com.glmall.product.controller", "com.glmall.ware.controller", "com.glmall.thirdparty.controller"})
+        "com.glmall.product.controller", "com.glmall.ware.controller", "com.glmall.thirdparty.controller",
+        "com.glmall.auth.web.controller"})
 @Slf4j
 public class GlmallExceptionControllerAdvice {
 

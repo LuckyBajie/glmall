@@ -5,17 +5,16 @@ import com.glmall.common.utils.TraceIdUtil;
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
-
-import javax.servlet.http.HttpServletRequest;
-import java.util.Enumeration;
 
 @Slf4j
 public class FeignBasicAuthRequestInterceptor implements RequestInterceptor {
 
     @Override
     public void apply(RequestTemplate requestTemplate) {
+        // 将traceId给添加到请求头中
+        requestTemplate.header(Constant.TRACE_ID, TraceIdUtil.getTraceId());
+        /*
+        note: 关于请求头重写的事情，以后再说
         // 请求上下文
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder
                 .getRequestAttributes();
@@ -27,7 +26,9 @@ public class FeignBasicAuthRequestInterceptor implements RequestInterceptor {
             while (headerNames.hasMoreElements()) {
                 String name = headerNames.nextElement();
                 String values = request.getHeader(name);
-                requestTemplate.header(name, values);
+                if (!requestTemplate.headers().containsKey(name)) {
+                    requestTemplate.header(name, values);
+                }
             }
         }
         // 将traceId给添加到请求头中
@@ -49,8 +50,9 @@ public class FeignBasicAuthRequestInterceptor implements RequestInterceptor {
         if (body.length() != 0) {
             body.deleteCharAt(body.length() - 1);
             requestTemplate.body(body.toString());
+//            requestTemplate.body(Request.Body.bodyTemplate(body.toString(), StandardCharsets.UTF_8));
             log.info("feign interceptor body:{}", body.toString());
         }
-
+*/
     }
 }

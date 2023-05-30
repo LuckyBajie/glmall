@@ -1,8 +1,13 @@
 package com.glmall.member.controller;
 
+import com.glmall.common.constant.BusinessErrorCodeEnum;
+import com.glmall.common.to.MemberUserRegisterTo;
+import com.glmall.common.to.UserLoginTo;
 import com.glmall.common.utils.PageUtils;
 import com.glmall.common.utils.R;
 import com.glmall.member.entity.MemberEntity;
+import com.glmall.member.exceptions.PhoneExistException;
+import com.glmall.member.exceptions.UserNameExistException;
 import com.glmall.member.feign.CouponCallService;
 import com.glmall.member.service.MemberService;
 import lombok.extern.slf4j.Slf4j;
@@ -93,6 +98,32 @@ public class MemberController {
         memberService.removeByIds(Arrays.asList(ids));
 
         return R.ok();
+    }
+
+    /**
+     * 会员注册
+     */
+    @PostMapping("/userReg")
+    public R userReg(@RequestBody MemberUserRegisterTo vo) {
+        try {
+            memberService.registerUser(vo);
+        } catch (PhoneExistException e) {
+            return R.error(BusinessErrorCodeEnum.PHONE_NUMBER_EXIST_EXCEPTION);
+        } catch (UserNameExistException e) {
+            return R.error(BusinessErrorCodeEnum.USER_EXIST_EXCEPTION);
+        } catch (Exception e) {
+            return R.error();
+        }
+
+        return R.ok();
+    }
+
+    @PostMapping("/userLogin")
+    public R userLogin(@RequestBody UserLoginTo to) {
+
+        MemberEntity entity = memberService.login(to);
+
+        return entity == null ? R.error(BusinessErrorCodeEnum.USER_LOGIN_EXCEPTION) : R.ok();
     }
 
 }

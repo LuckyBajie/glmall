@@ -1,5 +1,6 @@
 package com.glmall.common.configuration;
 
+import com.glmall.common.configuration.properties.ThreadPoolConfigProperties;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;

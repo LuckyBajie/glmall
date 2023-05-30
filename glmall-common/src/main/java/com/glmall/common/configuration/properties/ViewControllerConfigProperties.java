@@ -1,7 +1,10 @@
-package com.glmall.common.configuration;
+package com.glmall.common.configuration.properties;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * @ConfigurationProperties：说明这个类是配置属性类
@@ -10,11 +13,9 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * 注解@EnableConfigurationProperties(ThreadPoolConfigProperties.class)，
  * 将这个配置类注入到容器中
  */
-@ConfigurationProperties(prefix = "glmall.common-thread-pool")
+@ConfigurationProperties(prefix = "glmall.view-controllers")
 // @Component
 @Data
-public class ThreadPoolConfigProperties {
-    private Integer coreSize;
-    private Integer maxSize;
-    private Integer keepAliveTime;
+public class ViewControllerConfigProperties {
+    private List<Map<String , String>> viewControllers;
 }

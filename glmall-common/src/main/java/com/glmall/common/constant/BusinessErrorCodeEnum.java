@@ -19,6 +19,11 @@ public enum BusinessErrorCodeEnum {
     UNKNOWN_EXCEPTION(10000, "系统未知异常"),
     PARAMETER_VALIDATE_EXCEPTION(11000, "参数校验异常"),
     PRODUCT_UP_EXCEPTION(12000, "商品上架异常"),
+    REG_SMS_EXCEPTION(13000, "注册验证码发送异常"),
+    AUTH_REG_SMS_EXCEPTION(14000, "获取注册验证码频率太高，稍后再试"),
+    USER_EXIST_EXCEPTION(15000, "用户已经存在"),
+    PHONE_NUMBER_EXIST_EXCEPTION(15001, "用户已经存在"),
+    USER_LOGIN_EXCEPTION(15002, "用户登录失败，账号或密码错误"),
     ;
 
     private Integer code;
